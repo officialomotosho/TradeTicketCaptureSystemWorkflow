@@ -115,7 +115,7 @@ public class TTCSTradeAmend extends Engine {
 			
 			writeXml(tradeEvent);
 			
-			TTCSTradeAmend = trade.getLongId()    +    trade.getExternalReference()     +     trade.getComment()     +     trade.getStatus();
+			TTCSTradeAmend = trade.getLongId()    +" - " +   trade.getExternalReference()     +" - " +  trade.getStatus();
 			
 			Log.system("Picking Trade For Amendment <<< 0", "AmendTrade:\n" + TTCSTradeAmend);
 			
@@ -180,7 +180,14 @@ public class TTCSTradeAmend extends Engine {
 		try {
 		FileOutputStream fos = new FileOutputStream(new File("C:/Users/lenono/Downloads/new jar/iso_translator/amend.xml"));
         XMLEncoder encoder  = new XMLEncoder(fos);
-        encoder.writeObject(trade.getExternalReference() + trade.getLongId() + trade.getStatus() + trade.getComment());
+			
+			//You first have to arrange what you're putting in the XML file 
+			String xmlData = "<ExternalReference>"+trade.getExternalReference()+"</ExternalReference> \n"+
+				"<TradeStatus>"+trade.getStatus()+"</TradeStatus>"+
+				"<TradeID>"+trade.getLongId()+"</TradeID>"+
+				"<Comment>"+ trade.getComment()+"</Comment>";
+        encoder.writeObject(xmlData);
+			
         Log.system(getEngineName(),  "File Has Been Written");
         encoder.close();
         fos.close();
